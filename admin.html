@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Constantino Advogados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { burgundy: '#4A1414', gold: '#C9A24D', softBlack: '#111111', sidebar: '#0D0D0D' },
+                    fontFamily: { serif: ['Cormorant Garamond', 'serif'], sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hidden { display: none !important; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #C9A24D; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-softBlack overflow-hidden">
+
+    <div id="login-screen" class="h-screen w-full flex items-center justify-center bg-sidebar px-6">
+        <div class="bg-white p-10 w-full max-w-md shadow-2xl border-t-4 border-gold text-center">
+            <h1 class="font-serif text-3xl text-burgundy font-bold uppercase mb-8 italic">Constantino</h1>
+            <div class="space-y-4 text-left">
+                <input type="email" id="login-email" placeholder="E-mail" class="w-full border-b p-3 outline-none focus:border-burgundy text-sm">
+                <input type="password" id="login-pass" placeholder="Senha" class="w-full border-b p-3 outline-none focus:border-burgundy text-sm">
+                <button onclick="handleLogin()" class="w-full bg-burgundy text-white py-4 uppercase text-xs font-bold tracking-widest shadow-lg hover:bg-black transition">Acessar Sistema</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-panel" class="flex h-screen w-full hidden">
+        <aside class="w-64 bg-sidebar text-white flex flex-col">
+            <div class="p-8 border-b border-white/5">
+                <h2 class="font-serif text-2xl font-bold italic">Constantino</h2>
+                <p id="user-role-badge" class="text-[9px] uppercase tracking-widest text-gold mt-1 font-bold"></p>
+            </div>
+            <nav class="flex-1 p-6 space-y-2 text-[10px] uppercase font-bold text-gray-400">
+                <button onclick="showSection('publicacoes')" class="w-full text-left p-4 rounded hover:bg-white/5 transition">Publicações</button>
+                <div id="owner-menu" class="hidden">
+                    <button onclick="showSection('usuarios')" class="w-full text-left p-4 rounded hover:bg-white/5 transition">Gestão de Owners</button>
+                </div>
+                <button onclick="handleLogout()" class="w-full text-left p-4 text-burgundy mt-10 hover:text-red-500">Sair</button>
+            </nav>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-hidden bg-white">
+            <header class="h-20 border-b flex items-center justify-between px-10">
+                <h3 id="section-title" class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Constantino / Publicações</h3>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-10 custom-scrollbar">
+                <section id="sec-publicacoes">
+                    <div class="flex justify-between items-end mb-8 border-b pb-4">
+                        <h2 class="text-3xl font-serif text-burgundy italic font-bold">Doutrina Jurídica</h2>
+                        <button onclick="openModal()" class="bg-gold text-white px-6 py-2 text-[10px] font-bold uppercase tracking-widest">Nova Publicação</button>
+                    </div>
+                    <div id="posts-list" class="grid gap-4">
+                        </div>
+                </section>
+
+                <section id="sec-usuarios" class="hidden">
+                    <h2 class="text-3xl font-serif text-burgundy italic font-bold mb-6">Gestão de Owners</h2>
+                    <p class="text-gray-400 italic">Módulo exclusivo ativado.</p>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div id="post-modal" class="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-6 hidden">
+        <div class="bg-white max-w-xl w-full p-10 shadow-2xl">
+            <h3 id="modal-title" class="font-serif text-2xl text-burgundy mb-6 italic">Cadastrar Artigo</h3>
+            <input type="hidden" id="edit-id">
+            <div class="space-y-4">
+                <input type="text" id="post-title" placeholder="Título" class="w-full border p-3 text-sm outline-none">
+                <input type="text" id="post-area" placeholder="Área" class="w-full border p-3 text-sm outline-none">
+                <input type="text" id="post-date" placeholder="Data (Ex: Jan 2026)" class="w-full border p-3 text-sm outline-none">
+                <textarea id="post-resume" placeholder="Resumo" class="w-full border p-3 text-sm h-32 outline-none"></textarea>
+            </div>
+            <div class="mt-8 flex justify-end space-x-4">
+                <button onclick="closeModal()" class="text-[10px] font-bold uppercase text-gray-400">Cancelar</button>
+                <button onclick="savePost()" class="bg-burgundy text-white px-8 py-3 text-[10px] font-bold uppercase">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, onSnapshot, addDoc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMNUmy_CtBUhMdZQEyDpyjr_0aYKo61vU",
+            authDomain: "constantino-advogados.firebaseapp.com",
+            projectId: "constantino-advogados",
+            storageBucket: "constantino-advogados.firebasestorage.app",
+            messagingSenderId: "627198966658",
+            appId: "1:627198966658:web:9c5900606bfa2aa068ed9b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Funções Globais
+        window.handleLogin = () => {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+            signInWithEmailAndPassword(auth, email, pass).catch(e => alert("Erro: " + e.message));
+        };
+
+        window.handleLogout = () => signOut(auth).then(() => location.reload());
+
+        window.showSection = (name) => {
+            document.getElementById('sec-publicacoes').classList.toggle('hidden', name !== 'publicacoes');
+            document.getElementById('sec-usuarios').classList.toggle('hidden', name !== 'usuarios');
+            document.getElementById('section-title').innerText = `Constantino / ${name}`;
+        };
+
+        window.openModal = (id = null, data = null) => {
+            document.getElementById('edit-id').value = id || '';
+            document.getElementById('post-title').value = data?.title || '';
+            document.getElementById('post-area').value = data?.area || '';
+            document.getElementById('post-date').value = data?.date || '';
+            document.getElementById('post-resume').value = data?.resume || '';
+            document.getElementById('modal-title').innerText = id ? 'Editar Publicação' : 'Cadastrar Artigo';
+            document.getElementById('post-modal').classList.remove('hidden');
+        };
+
+        window.closeModal = () => document.getElementById('post-modal').classList.add('hidden');
+
+        window.savePost = async () => {
+            const id = document.getElementById('edit-id').value;
+            const payload = {
+                title: document.getElementById('post-title').value,
+                area: document.getElementById('post-area').value,
+                date: document.getElementById('post-date').value,
+                resume: document.getElementById('post-resume').value
+            };
+            id ? await updateDoc(doc(db, "publicacoes", id), payload) : await addDoc(collection(db, "publicacoes"), payload);
+            closeModal();
+        };
+
+        window.deletePost = (id) => confirm('Excluir?') && deleteDoc(doc(db, "publicacoes", id));
+
+        // Monitor de Estado
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                const role = userDoc.exists() ? userDoc.data().role : 'admin';
+                document.getElementById('user-role-badge').innerText = role === 'owner' ? 'Acesso Proprietário' : 'Acesso Administrador';
+                if(role === 'owner') document.getElementById('owner-menu').classList.remove('hidden');
+
+                const q = query(collection(db, "publicacoes"), orderBy("date", "desc"));
+                onSnapshot(q, (snap) => {
+                    const list = document.getElementById('posts-list');
+                    list.innerHTML = '';
+                    snap.forEach(d => {
+                        const p = d.data();
+                        list.innerHTML += `
+                            <div class="border p-6 flex justify-between items-center bg-gray-50">
+                                <div>
+                                    <h4 class="font-bold">${p.title}</h4>
+                                    <p class="text-[10px] text-gold uppercase font-bold">${p.area} • ${p.date}</p>
+                                </div>
+                                <div class="space-x-4">
+                                    <button onclick='openModal("${d.id}", ${JSON.stringify(p)})' class="text-[10px] font-bold uppercase text-gray-400 hover:text-burgundy">Editar</button>
+                                    <button onclick="deletePost('${d.id}')" class="text-[10px] font-bold uppercase text-red-800">Remover</button>
+                                </div>
+                            </div>`;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
