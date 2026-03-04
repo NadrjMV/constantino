@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-br" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="Constantino Advogados - Escritório especializado em Direito Público e Privado. Liderança técnica e rigor acadêmico sob o comando do Prof. Carlos Ernani Constantino e sócios.">
+    <meta name="description"
+        content="Constantino Advogados - Escritório especializado em Direito Público e Privado. Liderança técnica e rigor acadêmico sob o comando do Prof. Carlos Ernani Constantino e sócios.">
     <title>Constantino Advogados | Excelência Jurídica e Acadêmica</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Preloading Agressivo de Todas as Imagens do Time -->
+    <link rel="preload" as="image" href="fotos/Equipe.webp">
+    <link rel="preload" as="image" href="fotos/Carlos.webp">
+    <link rel="preload" as="image" href="fotos/Jéssica.webp">
+    <link rel="preload" as="image" href="fotos/Gustavo.webp">
+    <link rel="preload" as="image" href="fotos/Milene.webp">
+    <link rel="preload" as="image" href="fotos/Thiago.webp">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <script type="application/ld+json">
     {
@@ -54,37 +65,196 @@
     </script>
 
     <style>
-        .glass { background: rgba(251, 251, 249, 0.95); backdrop-filter: blur(12px); }
-        
-        .hero-bg { 
-            background: linear-gradient(rgba(17,17,17,0.7), rgba(17,17,17,0.7)), url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80'); 
-            background-size: cover; background-position: center; 
+        .glass {
+            background: rgba(251, 251, 249, 0.95);
+            backdrop-filter: blur(12px);
         }
-        
-        [x-cloak] { display: none !important; }
+
+        .hero-bg {
+            background: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.7)), url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
 
         /* Cursor Personalizado */
         #custom-cursor {
-            width: 25px; height: 25px; border: 1px solid #C9A24D;
-            border-radius: 50%; position: fixed; pointer-events: none;
-            z-index: 9999; transition: transform 0.1s ease;
+            width: 25px;
+            height: 25px;
+            border: 1px solid #C9A24D;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
         }
 
         /* Scroll Reveal - Elementos surgindo */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* Parallax nas fotos dos advogados */
-        .parallax-container { overflow: hidden; }
-        .parallax-img { transition: transform 0.4s cubic-bezier(0, 0, 0.2, 1); }
+        .parallax-container {
+            overflow: hidden;
+        }
 
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #C9A24D; }
+        .parallax-img {
+            transition: transform 0.4s cubic-bezier(0, 0, 0.2, 1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #C9A24D;
+        }
+
+        /* Otimizações de Performance de Renderização */
+        .parallax-img {
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        #atuacao,
+        #publicacoes {
+            content-visibility: auto;
+            contain-intrinsic-size: 1000px;
+        }
+
+        /* Textura de Papel Sutil */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Efeito de Foco na Equipe */
+        .advogado-card {
+            transition: opacity 0.5s ease, filter 0.5s ease;
+            opacity: 1;
+        }
+
+        #advogados:has(.advogado-card:hover) .advogado-card:not(:hover) {
+            opacity: 0.6;
+            filter: grayscale(0.5);
+        }
+
+        /* Botão Concierge */
+        #whatsapp-concierge {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .concierge-bubble {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-right: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #4A1414;
+            border: 1px solid #C9A24D;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        #whatsapp-concierge:hover .concierge-bubble {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #FBFBF9;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader-ring {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #EEE;
+            border-top: 2px solid #C9A24D;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Skeleton Animation */
+        .skeleton {
+            background: linear-gradient(90deg, #F3F3F3 25%, #EBEBEB 50%, #F3F3F3 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
     </style>
 
     <div id="custom-cursor" class="hidden lg:block"></div>
 </head>
-<body class="bg-offWhite text-softBlack font-sans antialiased">
+
+<body class="bg-offWhite text-softBlack font-sans antialiased overflow-hidden" id="body-tag">
+
+    <!-- Preloader Global -->
+    <div id="preloader">
+        <div class="text-burgundy font-serif text-3xl mb-4 tracking-tighter flex flex-col items-center">
+            <span class="font-bold">CONSTANTINO</span>
+            <span class="text-[10px] tracking-[0.4em] text-gold mt-1 uppercase">Advogados</span>
+        </div>
+        <div class="loader-ring"></div>
+    </div>
 
     <header x-data="{ open: false }" class="fixed w-full z-50 glass border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -96,7 +266,8 @@
             </a>
 
             <div class="hidden lg:flex items-center">
-                <nav class="flex space-x-8 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-600 border-r pr-8 border-gray-100">
+                <nav
+                    class="flex space-x-8 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-600 border-r pr-8 border-gray-100">
                     <a href="#escritorio" class="hover:text-gold transition">O Escritório</a>
                     <a href="#atuacao" class="hover:text-gold transition">Áreas de Atuação</a>
                     <a href="#advogados" class="hover:text-gold transition">Corpo Jurídico</a>
@@ -110,16 +281,20 @@
                 </div>
             </div>
 
-            <a href="#contato" class="hidden lg:block border border-gold text-gold px-5 py-2 text-[10px] uppercase tracking-widest hover:bg-gold hover:text-white transition font-bold">
+            <a href="#contato"
+                class="hidden lg:block border border-gold text-gold px-5 py-2 text-[10px] uppercase tracking-widest hover:bg-gold hover:text-white transition font-bold">
                 Atendimento Profissional
             </a>
 
             <button @click="open = !open" class="lg:hidden text-burgundy" aria-label="Menu">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7" stroke-width="2" stroke-linecap="round"/></svg>
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16m-7 6h7" stroke-width="2" stroke-linecap="round" />
+                </svg>
             </button>
         </div>
 
-        <div x-show="open" x-cloak class="lg:hidden bg-white border-t p-6 space-y-4 text-center text-[10px] tracking-widest uppercase font-bold">
+        <div x-show="open" x-cloak
+            class="lg:hidden bg-white border-t p-6 space-y-4 text-center text-[10px] tracking-widest uppercase font-bold">
             <a href="#escritorio" @click="open = false" class="block py-2">O Escritório</a>
             <a href="#atuacao" @click="open = false" class="block py-2">Áreas de Atuação</a>
             <a href="#advogados" @click="open = false" class="block py-2">Advogados</a>
@@ -129,14 +304,19 @@
 
     <section class="relative h-[85vh] lg:h-screen flex items-center justify-center hero-bg text-white">
         <div class="text-center px-6 max-w-5xl">
-            <span class="block uppercase tracking-[0.4em] text-gold mb-6 text-[10px] lg:text-xs font-semibold">Fundado na Ciência Jurídica</span>
-            <h1 class="font-serif text-4xl lg:text-7xl mb-8 leading-tight italic">“Quem não ama a Ciência Jurídica, não entre por estas portas.”</h1>
+            <span class="block uppercase tracking-[0.4em] text-gold mb-6 text-[10px] lg:text-xs font-semibold">Fundado
+                na Ciência Jurídica</span>
+            <h1 class="font-serif text-4xl lg:text-7xl mb-8 leading-tight italic">“Quem não ama a Ciência Jurídica, não
+                entre por estas portas.”</h1>
             <p class="text-base lg:text-xl font-light text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed italic">
                 Rigor doutrinário e dedicação à vocação do Direito na Aldeia Global.
             </p>
             <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <a href="#atuacao" class="bg-gold text-white px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-opacity-90 transition w-full sm:w-auto">Nossa Atuação</a>
-                <a href="#contato" class="border border-white/40 text-white px-10 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-softBlack transition w-full sm:w-auto">
+                <a href="#atuacao"
+                    class="bg-gold text-white px-12 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-opacity-90 transition w-full sm:w-auto">Nossa
+                    Atuação</a>
+                <a href="#contato"
+                    class="border border-white/40 text-white px-10 py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-softBlack transition w-full sm:w-auto">
                     Fale com o Escritório
                 </a>
             </div>
@@ -148,17 +328,25 @@
             <div class="grid lg:grid-cols-12 gap-16 items-center">
                 <div class="lg:col-span-7">
                     <h2 class="font-serif text-[10px] uppercase tracking-[0.5em] text-gold mb-4">Institucional</h2>
-                    <h3 class="font-serif text-4xl lg:text-5xl mb-10 text-burgundy leading-tight italic">Vocação Técnica e <br>Compromisso Ético</h3>
+                    <h3 class="font-serif text-4xl lg:text-5xl mb-10 text-burgundy leading-tight italic">Vocação Técnica
+                        e <br>Compromisso Ético</h3>
                     <div class="space-y-6 text-gray-600 leading-relaxed text-base lg:text-lg font-light">
-                        <p>O <strong>Constantino Advogados</strong> é pautado pela consciência de que o Direito regula a vida em todos os níveis. Essa percepção demanda uma completa dedicação e vocação para com a Ciência Jurídica.</p>
-                        <p>Atuamos com base nos melhores influxos doutrinários pátrios e estrangeiros, mantendo contato contínuo com as tendências acadêmicas dos principais polos mundiais.</p>
+                        <p>O <strong>Constantino Advogados</strong> é pautado pela consciência de que o Direito regula a
+                            vida em todos os níveis. Essa percepção demanda uma completa dedicação e vocação para com a
+                            Ciência Jurídica.</p>
+                        <p>Atuamos com base nos melhores influxos doutrinários pátrios e estrangeiros, mantendo contato
+                            contínuo com as tendências acadêmicas dos principais polos mundiais.</p>
                     </div>
                 </div>
-                <div class="lg:col-span-5 relative">
-                    <img loading="lazy" src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80" alt="Bilioteca Jurídica" class="w-full h-[450px] object-cover grayscale">
-                    <div class="absolute -bottom-6 -left-6 bg-burgundy p-8 text-gold hidden lg:block">
-                        <p class="font-serif text-4xl">Doutrina</p>
-                        <p class="text-[10px] uppercase tracking-widest text-white mt-1 italic">Rigor & Ciência</p>
+                <div class="lg:col-span-5 relative group">
+                    <div class="overflow-hidden bg-burgundy/5 skeleton aspect-[3/4] lg:aspect-auto">
+                        <img loading="eager" decoding="async" src="fotos/Equipe.webp" alt="Equipe Constantino Advogados"
+                            width="1200" height="800" onload="this.parentElement.classList.remove('skeleton')"
+                            class="w-full h-[450px] object-cover grayscale group-hover:grayscale-0 transition-all duration-700 hover:scale-105">
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 bg-burgundy p-8 text-gold hidden lg:block shadow-xl">
+                        <p class="font-serif text-4xl">Equipe</p>
+                        <p class="text-[10px] uppercase tracking-widest text-white mt-1 italic">Excelência & União</p>
                     </div>
                 </div>
             </div>
@@ -168,61 +356,79 @@
     <section id="atuacao" x-data="{ tab: 'publico' }" class="py-24 bg-[#F2F0ED]">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
             <div class="text-center mb-16">
-                <h2 class="font-serif text-[10px] uppercase tracking-[0.5em] text-gold mb-4 uppercase">Especialidades</h2>
+                <h2 class="font-serif text-[10px] uppercase tracking-[0.5em] text-gold mb-4 uppercase">Especialidades
+                </h2>
                 <h3 class="font-serif text-4xl lg:text-5xl text-burgundy italic">Campos de Atuação</h3>
                 <div class="flex justify-center mt-10 space-x-2 lg:space-x-4">
-                    <button @click="tab = 'publico'" :class="tab === 'publico' ? 'bg-burgundy text-white' : 'bg-transparent text-burgundy border border-burgundy'" class="px-4 lg:px-8 py-3 text-[10px] uppercase tracking-widest font-bold transition">D. Público</button>
-                    <button @click="tab = 'privado'" :class="tab === 'privado' ? 'bg-burgundy text-white' : 'bg-transparent text-burgundy border border-burgundy'" class="px-4 lg:px-8 py-3 text-[10px] uppercase tracking-widest font-bold transition">D. Privado</button>
+                    <button @click="tab = 'publico'"
+                        :class="tab === 'publico' ? 'bg-burgundy text-white' : 'bg-transparent text-burgundy border border-burgundy'"
+                        class="px-4 lg:px-8 py-3 text-[10px] uppercase tracking-widest font-bold transition">D.
+                        Público</button>
+                    <button @click="tab = 'privado'"
+                        :class="tab === 'privado' ? 'bg-burgundy text-white' : 'bg-transparent text-burgundy border border-burgundy'"
+                        class="px-4 lg:px-8 py-3 text-[10px] uppercase tracking-widest font-bold transition">D.
+                        Privado</button>
                 </div>
             </div>
 
             <div x-show="tab === 'publico'" x-transition class="grid lg:grid-cols-3 gap-6">
                 <div class="bg-white p-8">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Direito Constitucional</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Teoria dos direitos fundamentais e individuais assegurados na Carta Magna, com atuação perante tribunais superiores.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Teoria dos direitos fundamentais e individuais
+                        assegurados na Carta Magna, com atuação perante tribunais superiores.</p>
                 </div>
                 <div class="bg-white p-8">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Direito Administrativo</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Processos administrativos, licitações e defesa do cidadão perante interferências da Administração Pública.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Processos administrativos, licitações e defesa do
+                        cidadão perante interferências da Administração Pública.</p>
                 </div>
                 <div class="bg-white p-8 border-b-2 border-gold">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Penal e Processual Penal</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Foco na Dogmática Jurídica atualizada (Alemanha, Itália, Espanha) e Criminalidade Econômica.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Foco na Dogmática Jurídica atualizada (Alemanha,
+                        Itália, Espanha) e Criminalidade Econômica.</p>
                 </div>
                 <div class="bg-white p-8">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Direito Eleitoral</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Atuação no processo administrativo eleitoral e na esfera dos crimes eleitorais e direito de resposta.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Atuação no processo administrativo eleitoral e na
+                        esfera dos crimes eleitorais e direito de resposta.</p>
                 </div>
                 <div class="bg-white p-8">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Direito Tributário</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Esfera preventiva e reparadora perante o Fisco, defesa em crimes de sonegação e pareceres técnicos.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Esfera preventiva e reparadora perante o Fisco,
+                        defesa em crimes de sonegação e pareceres técnicos.</p>
                 </div>
                 <div class="bg-white p-8">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Difusos e Coletivos</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Defesa em casos de improbidade administrativa, ambiental e interesses de entidades representativas.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Defesa em casos de improbidade administrativa,
+                        ambiental e interesses de entidades representativas.</p>
                 </div>
             </div>
 
             <div x-show="tab === 'privado'" x-transition class="grid lg:grid-cols-3 gap-6">
                 <div class="bg-white p-8">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Direito Civil</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Biodireito, Família e Sucessões. Atuação em guarda compartilhada e planejamento sucessório.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Biodireito, Família e Sucessões. Atuação em guarda
+                        compartilhada e planejamento sucessório.</p>
                 </div>
                 <div class="bg-white p-8">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Direito Empresarial</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Advocacia preventiva societária, gestão de riscos mercantis e contencioso estratégico empresarial.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Advocacia preventiva societária, gestão de riscos
+                        mercantis e contencioso estratégico empresarial.</p>
                 </div>
                 <div class="bg-white p-8 border-b-2 border-gold">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Internacional Privado</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Contratos de importação/exportação e assistência jurídica em outros países e idiomas.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Contratos de importação/exportação e assistência
+                        jurídica em outros países e idiomas.</p>
                 </div>
                 <div class="bg-white p-8">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Direito do Trabalho</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Assessoria sindical, contratos e atuação contenciosa em todos os níveis da relação laboral.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Assessoria sindical, contratos e atuação
+                        contenciosa em todos os níveis da relação laboral.</p>
                 </div>
                 <div class="bg-white p-8">
                     <h4 class="font-serif text-xl mb-4 text-gold italic">Direito Previdenciário</h4>
-                    <p class="text-xs text-gray-500 leading-relaxed">Regime Geral e Próprio. Revisão de benefícios e postulação administrativa e judicial.</p>
+                    <p class="text-xs text-gray-500 leading-relaxed">Regime Geral e Próprio. Revisão de benefícios e
+                        postulação administrativa e judicial.</p>
                 </div>
             </div>
         </div>
@@ -231,25 +437,28 @@
     <section class="bg-burgundy py-24 text-white overflow-hidden relative">
         <div class="absolute right-0 top-0 h-full opacity-5 pointer-events-none select-none">
             <svg class="h-full w-auto" viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="40" y="50" width="20" height="300" fill="#C9A24D"/>
-                <rect x="90" y="50" width="20" height="300" fill="#C9A24D"/>
-                <rect x="140" y="50" width="20" height="300" fill="#C9A24D"/>
-                <rect x="30" y="30" width="140" height="20" fill="#C9A24D"/>
-                <rect x="30" y="350" width="140" height="20" fill="#C9A24D"/>
+                <rect x="40" y="50" width="20" height="300" fill="#C9A24D" />
+                <rect x="90" y="50" width="20" height="300" fill="#C9A24D" />
+                <rect x="140" y="50" width="20" height="300" fill="#C9A24D" />
+                <rect x="30" y="30" width="140" height="20" fill="#C9A24D" />
+                <rect x="30" y="350" width="140" height="20" fill="#C9A24D" />
             </svg>
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-12 relative z-10">
+        <div
+            class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-12 relative z-10">
             <div class="grid grid-cols-2 gap-12 md:gap-24">
                 <div class="reveal">
                     <p class="font-serif text-5xl lg:text-7xl text-gold italic">30+</p>
                     <div class="h-[1px] w-12 bg-gold/50 my-4"></div>
-                    <p class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-300">Anos de <br>Experiência e Docência</p>
+                    <p class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-300">Anos de <br>Experiência e
+                        Docência</p>
                 </div>
                 <div class="reveal">
                     <p class="font-serif text-5xl lg:text-7xl text-gold italic uppercase">Aldeia</p>
                     <div class="h-[1px] w-12 bg-gold/50 my-4"></div>
-                    <p class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-300">Conexão Global <br>e Rigor Técnico</p>
+                    <p class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-300">Conexão Global <br>e Rigor
+                        Técnico</p>
                 </div>
             </div>
 
@@ -262,118 +471,97 @@
         </div>
     </section>
 
-    <section id="advogados" class="py-24 bg-white">
+    <section id="advogados" class="py-24 bg-white" x-data="teamSection">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
             <h2 class="font-serif text-[10px] uppercase tracking-[0.5em] text-gold mb-4 text-center">Corpo Jurídico</h2>
             <h3 class="font-serif text-4xl lg:text-5xl text-burgundy mb-20 text-center italic">Sócios e Associados</h3>
-            
-            <div class="space-y-32">
-                <div class="grid lg:grid-cols-12 gap-12 reveal">
-                    <div class="lg:col-span-4 parallax-container">
-                        <img src="assets/img/carlos.jpg" class="parallax-img w-full aspect-[3/4] object-cover grayscale">
-                    </div>
-                    <div class="lg:col-span-8 flex flex-col justify-center">
-                        <h4 class="font-serif text-3xl text-burgundy italic mb-2">Carlos Ernani Constantino</h4>
-                        <p class="text-gold text-[10px] uppercase tracking-widest font-bold mb-6">Sócio-Fundador | Mestre em Direito Público</p>
-                        <div class="prose prose-sm text-gray-600 space-y-4 max-w-2xl">
-                            <p>Promotor de Justiça Aposentado e Professor de Direito Penal e Filosofia Jurídica na Faculdade de Direito de Franca. Autor de obras fundamentais como "Delitos Ecológicos".</p>
-                            <p class="italic text-xs">Tradutor e intérprete em Inglês e Alemão, com estudos de Germanística em Salzburg, Áustria.</p>
+
+            <!-- Loading State -->
+            <div x-show="loading" class="space-y-32">
+                <div class="grid lg:grid-cols-12 gap-12 animate-pulse">
+                    <div class="lg:col-span-4 aspect-[3/4] bg-burgundy/5"></div>
+                    <div class="lg:col-span-8 flex flex-col justify-center space-y-4">
+                        <div class="h-8 bg-burgundy/5 w-1/2"></div>
+                        <div class="h-4 bg-burgundy/5 w-1/4"></div>
+                        <div class="space-y-2">
+                            <div class="h-4 bg-burgundy/5 w-full"></div>
+                            <div class="h-4 bg-burgundy/5 w-5/6"></div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="grid lg:grid-cols-12 gap-12 reveal lg:text-right">
-                    <div class="lg:col-span-4 lg:order-2 parallax-container">
-                        <img src="assets/img/jessica.jpg" class="parallax-img w-full aspect-[3/4] object-cover grayscale">
-                    </div>
-                    <div class="lg:col-span-8 lg:order-1 flex flex-col justify-center">
-                        <h4 class="font-serif text-3xl text-burgundy italic mb-2">Jéssica Alessandra Constantino</h4>
-                        <p class="text-gold text-[10px] uppercase tracking-widest font-bold mb-6">Advogada Sócia | Especialista em Ciências Criminais</p>
-                        <div class="prose prose-sm text-gray-600 space-y-4 ml-auto max-w-2xl">
-                            <p>Especialista em Direito Penal e Processual Penal. Atuação focada em teses modernas de Direito de Família, incluindo famílias reconstruídas e responsabilidade parental.</p>
+            <div class="space-y-32" x-show="!loading" x-cloak>
+                <template x-for="(member, index) in members" :key="member.id">
+                    <div class="grid lg:grid-cols-12 gap-12 reveal advogado-card"
+                        :class="index % 2 !== 0 ? 'lg:text-right' : ''">
+                        <div class="lg:col-span-4 parallax-container bg-burgundy/5 skeleton"
+                            :class="index % 2 !== 0 ? 'lg:order-2' : ''">
+                            <img :src="member.photo" loading="eager" decoding="async"
+                                @load="$el.parentElement.classList.remove('skeleton')"
+                                class="parallax-img w-full aspect-[3/4] object-cover grayscale" :alt="member.name">
+                        </div>
+                        <div class="lg:col-span-8 flex flex-col justify-center"
+                            :class="index % 2 !== 0 ? 'lg:order-1' : ''">
+                            <h4 class="font-serif text-3xl text-burgundy italic mb-2" x-text="member.name"></h4>
+                            <p class="text-gold text-[10px] uppercase tracking-widest font-bold mb-6"
+                                x-text="member.role"></p>
+                            <div class="prose prose-sm text-gray-600 space-y-4 max-w-2xl"
+                                :class="index % 2 !== 0 ? 'ml-auto' : ''">
+                                <p class="whitespace-pre-line" x-text="member.bio"></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="grid lg:grid-cols-12 gap-12 reveal">
-                    <div class="lg:col-span-4 parallax-container">
-                        <div class="w-full aspect-[3/4] bg-gray-100 flex items-center justify-center italic text-gray-400 text-xs">Imagem em breve</div>
-                    </div>
-                    <div class="lg:col-span-8 flex flex-col justify-center">
-                        <h4 class="font-serif text-3xl text-burgundy italic mb-2">Gustavo Branco Fortunato</h4>
-                        <p class="text-gold text-[10px] uppercase tracking-widest font-bold mb-6">Advogado Sócio</p>
-                        <p class="text-gray-600 text-sm italic">Perfil em desenvolvimento.</p>
-                    </div>
-                </div>
-
-                <div class="grid lg:grid-cols-12 gap-12 reveal lg:text-right">
-                    <div class="lg:col-span-4 lg:order-2 parallax-container">
-                        <div class="w-full aspect-[3/4] bg-gray-100 flex items-center justify-center italic text-gray-400 text-xs">Imagem em breve</div>
-                    </div>
-                    <div class="lg:col-span-8 lg:order-1 flex flex-col justify-center">
-                        <h4 class="font-serif text-3xl text-burgundy italic mb-2">Milene Cristina Diniz</h4>
-                        <p class="text-gold text-[10px] uppercase tracking-widest font-bold mb-6">Advogada | Especialista em Direito Previdenciário</p>
-                        <div class="prose prose-sm text-gray-600 space-y-4 ml-auto max-w-2xl">
-                            <p>Atuação destacada nas áreas Trabalhista (Consultiva e Contenciosa) e Previdenciária. Ex-estagiária oficial da Procuradoria Geral do Estado.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid lg:grid-cols-12 gap-12 reveal">
-                    <div class="lg:col-span-4 parallax-container">
-                        <div class="w-full aspect-[3/4] bg-gray-100 flex items-center justify-center italic text-gray-400 text-xs">Imagem em breve</div>
-                    </div>
-                    <div class="lg:col-span-8 flex flex-col justify-center">
-                        <h4 class="font-serif text-3xl text-burgundy italic mb-2">Thiago Magarotto Machado</h4>
-                        <p class="text-gold text-[10px] uppercase tracking-widest font-bold mb-6">Advogado Sócio | Pós-graduando USP</p>
-                        <div class="prose prose-sm text-gray-600 space-y-4 max-w-2xl">
-                            <p>Militante na área cível, com experiência prévia no Tribunal de Justiça de São Paulo. Especialista em Direito Processual Civil pela USP Ribeirão Preto.</p>
-                        </div>
-                    </div>
-                </div>
+                </template>
             </div>
         </div>
     </section>
 
-    <div class="hidden lg:flex items-center space-x-4 border-x px-6 mx-6 border-gray-100 text-[9px] font-bold uppercase tracking-widest">
-        <button class="text-burgundy">PT</button>
-        <button class="text-gray-400 hover:text-gold transition">EN</button>
-        <button class="text-gray-400 hover:text-gold transition">ES</button>
-    </div>
+    <!-- Remoção de bloco duplicado -->
 
-    <div x-data="{ open: false, post: {} }" 
-        @open-post.window="post = $event.detail; open = true" 
-        x-show="open" 
-        x-cloak 
+    <div x-data="{ open: false, post: {} }" @open-post.window="post = $event.detail; open = true" x-show="open" x-cloak
         class="fixed inset-0 z-[100] flex items-center justify-center p-4 lg:p-10">
-        
+
         <div @click="open = false" class="absolute inset-0 bg-black/95 backdrop-blur-md"></div>
-        
-        <div class="relative bg-offWhite w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl border-t-4 border-gold">
+
+        <div
+            class="relative bg-offWhite w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl border-t-4 border-gold">
             <button @click="open = false" class="absolute top-6 right-6 text-burgundy hover:scale-110 transition z-10">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
             </button>
 
             <div class="p-8 lg:p-20">
-                <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 border-b border-gray-100 pb-6 gap-4">
+                <div
+                    class="flex flex-col md:flex-row md:items-center justify-between mb-10 border-b border-gray-100 pb-6 gap-4">
                     <div>
-                        <p class="text-[10px] text-gold font-bold uppercase tracking-[0.3em]" x-text="post.area + ' • ' + post.date"></p>
-                        <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold" x-text="'Tempo estimado: ' + Math.ceil(post.resume.split(' ').length / 200) + ' min de leitura'"></span>
+                        <p class="text-[10px] text-gold font-bold uppercase tracking-[0.3em]"
+                            x-text="post.area + ' • ' + post.date"></p>
+                        <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold"
+                            x-text="post.resume ? 'Tempo estimado: ' + Math.ceil(post.resume.split(' ').length / 200) + ' min de leitura' : ''"></span>
                     </div>
                     <div class="flex items-center space-x-4">
                         <span class="text-[9px] text-gray-400 uppercase font-bold tracking-widest">Compartilhar:</span>
-                        <a :href="'https://wa.me/?text=' + encodeURIComponent('Artigo: ' + post.title + ' - Constantino Advogados')" target="_blank" class="bg-[#25D366] text-white p-2 rounded-full hover:scale-110 transition">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.481 5.229 3.481 8.404c0 6.556-5.332 11.888-11.888 11.888-2.013 0-3.987-.51-5.742-1.478l-6.242 1.635zm6.312-3.208l.353.21c1.511.896 3.243 1.37 5.023 1.37 5.402 0 9.799-4.397 9.799-9.799 0-2.618-1.02-5.08-2.871-6.932-1.851-1.852-4.314-2.871-6.928-2.871-5.402 0-9.799 4.397-9.799 9.799 0 1.834.512 3.626 1.481 5.178l.233.372-1.091 3.987 4.094-1.073z"/></svg>
+                        <a :href="'https://wa.me/?text=' + encodeURIComponent('Artigo: ' + post.title + ' - Constantino Advogados')"
+                            target="_blank" class="bg-[#25D366] text-white p-2 rounded-full hover:scale-110 transition">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.481 5.229 3.481 8.404c0 6.556-5.332 11.888-11.888 11.888-2.013 0-3.987-.51-5.742-1.478l-6.242 1.635zm6.312-3.208l.353.21c1.511.896 3.243 1.37 5.023 1.37 5.402 0 9.799-4.397 9.799-9.799 0-2.618-1.02-5.08-2.871-6.932-1.851-1.852-4.314-2.871-6.928-2.871-5.402 0-9.799 4.397-9.799 9.799 0 1.834.512 3.626 1.481 5.178l.233.372-1.091 3.987 4.094-1.073z" />
+                            </svg>
                         </a>
                     </div>
                 </div>
-                <h2 class="font-serif text-4xl lg:text-6xl text-burgundy italic mb-10 leading-tight" x-text="post.title"></h2>
-                <div class="prose prose-burgundy max-w-none text-gray-700 leading-relaxed font-light text-lg italic whitespace-pre-line border-l-2 border-gold/20 pl-8" x-text="post.resume"></div>
+                <h2 class="font-serif text-4xl lg:text-6xl text-burgundy italic mb-10 leading-tight"
+                    x-text="post.title"></h2>
+                <div class="prose prose-burgundy max-w-none text-gray-700 leading-relaxed font-light text-lg italic whitespace-pre-line border-l-2 border-gold/20 pl-8"
+                    x-text="post.resume"></div>
             </div>
         </div>
     </div>
 
-    <section id="publicacoes" class="py-24 bg-[#0A0A0A] border-b border-white/5">
+    <section id="publicacoes" class="py-24 bg-[#0A0A0A] border-b border-white/5" x-data="newsSection">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16">
                 <div>
@@ -381,15 +569,42 @@
                     <h3 class="font-serif text-4xl lg:text-5xl text-white italic">Publicações Jurídicas</h3>
                 </div>
                 <div class="mt-6 md:mt-0">
-                    <span class="text-[10px] text-gray-500 uppercase tracking-widest font-bold italic">Produção Acadêmica Recente</span>
+                    <span class="text-[10px] text-gray-500 uppercase tracking-widest font-bold italic">Produção
+                        Acadêmica Recente</span>
                 </div>
             </div>
-            
-            <div id="firebase-posts-container" class="grid md:grid-cols-3 gap-12">
-                <div class="animate-pulse space-y-4">
-                    <div class="h-4 bg-white/5 w-1/3"></div>
-                    <div class="h-8 bg-white/5 w-full"></div>
-                    <div class="h-20 bg-white/5 w-full"></div>
+
+            <!-- Loading Skeleton -->
+            <div x-show="loading" class="grid md:grid-cols-3 gap-12">
+                <template x-for="i in 3">
+                    <div class="animate-pulse space-y-4">
+                        <div class="h-4 bg-white/5 w-1/3"></div>
+                        <div class="h-8 bg-white/5 w-full"></div>
+                        <div class="h-20 bg-white/5 w-full"></div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Posts Container -->
+            <div x-show="!loading" x-cloak class="grid md:grid-cols-3 gap-12">
+                <template x-for="post in posts" :key="post.id">
+                    <article @click="window.dispatchEvent(new CustomEvent('open-post', { detail: post }))"
+                        class="group cursor-pointer border-l border-white/10 pl-6 hover:border-gold transition-all duration-500 reveal">
+                        <p class="text-[10px] text-gold font-bold mb-4 uppercase tracking-widest"
+                            x-text="post.area + ' • ' + post.date"></p>
+                        <h4 class="font-serif text-xl mb-4 group-hover:text-gold transition italic text-white"
+                            x-text="post.title"></h4>
+                        <p class="text-gray-500 text-xs leading-relaxed line-clamp-3" x-text="post.summary"></p>
+                        <span
+                            class="inline-block mt-4 text-[9px] text-white/30 uppercase tracking-[0.2em] group-hover:text-gold transition">Ler
+                            artigo completo +</span>
+                    </article>
+                </template>
+
+                <!-- Fallback empty state -->
+                <div x-show="posts.length === 0"
+                    class="col-span-full py-12 text-center border border-dashed border-white/10">
+                    <p class="text-gray-500 italic text-sm">Nenhuma publicação encontrada no momento.</p>
                 </div>
             </div>
         </div>
@@ -398,16 +613,20 @@
     <footer id="contato" class="bg-softBlack text-white pt-24 pb-12">
         <div class="max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-3 gap-20">
             <div>
-                <h4 class="font-serif text-2xl text-white italic">Constantino <br><span class="text-gold uppercase text-xs tracking-[0.3em] font-sans not-italic font-bold">Advogados</span></h4>
+                <h4 class="font-serif text-2xl text-white italic">Constantino <br><span
+                        class="text-gold uppercase text-xs tracking-[0.3em] font-sans not-italic font-bold">Advogados</span>
+                </h4>
                 <p class="text-gray-500 text-xs leading-relaxed mt-6 italic">
-                    Fundamentado na Ciência Jurídica e no compromisso ético com a justiça. Atuação rigorosa em conformidade com o Código de Ética e Disciplina da OAB.
+                    Fundamentado na Ciência Jurídica e no compromisso ético com a justiça. Atuação rigorosa em
+                    conformidade com o Código de Ética e Disciplina da OAB.
                 </p>
             </div>
             <div>
                 <h5 class="text-[10px] uppercase tracking-widest text-gold mb-8 font-bold">Canais de Atendimento</h5>
                 <p class="text-2xl font-light mb-2">+55 (16) 3026-1048</p>
                 <p class="text-gray-400 text-xs mb-8 italic">contato@constantinoadvogados.adv.br</p>
-                <a href="https://wa.me/551630261048" class="border border-gold text-gold px-8 py-3 text-[10px] uppercase tracking-widest font-bold hover:bg-gold hover:text-white transition">
+                <a href="https://wa.me/551630261048"
+                    class="border border-gold text-gold px-8 py-3 text-[10px] uppercase tracking-widest font-bold hover:bg-gold hover:text-white transition">
                     WhatsApp Profissional
                 </a>
             </div>
@@ -421,8 +640,9 @@
                 </p>
             </div>
         </div>
-        
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 mt-20 pt-8 border-t border-white/5 flex flex-col md:row justify-between items-center text-[9px] text-gray-600 tracking-[0.2em] uppercase font-bold">
+
+        <div
+            class="max-w-7xl mx-auto px-6 lg:px-12 mt-20 pt-8 border-t border-white/5 flex flex-col md:row justify-between items-center text-[9px] text-gray-600 tracking-[0.2em] uppercase font-bold">
             <p>© 2026 Constantino Advogados | OAB/SP Escritório Inscrito</p>
             <div class="mt-4 md:mt-0 space-x-6">
                 <a href="#" class="hover:text-gold transition">Privacidade</a>
@@ -434,6 +654,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import Alpine from 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/module.esm.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyCMNUmy_CtBUhMdZQEyDpyjr_0aYKo61vU",
@@ -447,62 +668,120 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 1. Cursor Customizado (Ideia 3)
+        // --- 1. Cursor Customizado ---
         const cursor = document.getElementById('custom-cursor');
         if (window.innerWidth > 1024) {
             document.addEventListener('mousemove', e => {
-                cursor.style.transform = `translate3d(${e.clientX - 12}px, ${e.clientY - 12}px, 0)`;
+                if (cursor) cursor.style.transform = `translate3d(${e.clientX - 12}px, ${e.clientY - 12}px, 0)`;
             });
         }
 
-        // 2. Scroll Reveal (Ideia 2)
+        // --- 2. Scroll Reveal ---
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('active');
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        // 3. Parallax nas Fotos (Ideia 1)
+        // --- 3. Parallax ---
         document.querySelectorAll('.parallax-container').forEach(container => {
             const img = container.querySelector('.parallax-img');
             if (!img) return;
+            let ticking = false;
+            let mouseX = 0, mouseY = 0;
             container.addEventListener('mousemove', (e) => {
-                const { width, height } = container.getBoundingClientRect();
-                const x = (e.offsetX / width - 0.5) * 30;
-                const y = (e.offsetY / height - 0.5) * 30;
-                img.style.transform = `scale(1.1) translate3d(${x}px, ${y}px, 0)`;
+                mouseX = e.offsetX; mouseY = e.offsetY;
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const { width, height } = container.getBoundingClientRect();
+                        const x = (mouseX / width - 0.5) * 30;
+                        const y = (mouseY / height - 0.5) * 30;
+                        img.style.transform = `scale(1.1) translate3d(${x}px, ${y}px, 0)`;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
             });
             container.addEventListener('mouseleave', () => {
                 img.style.transform = 'scale(1) translate3d(0, 0, 0)';
             });
         });
 
-        // 4. Carregamento Firebase e Modal (Ideia 5 e 8)
-        const pubContainer = document.getElementById('firebase-posts-container');
-        const q = query(collection(db, "publicacoes"), orderBy("date", "desc"), limit(3));
+        // --- 4. Seções Alpine.js ---
 
-        onSnapshot(q, (snapshot) => {
-            if (snapshot.empty) {
-                pubContainer.innerHTML = '<p class="text-gray-500 italic">Nenhuma publicação encontrada.</p>';
-                return;
+        // Notícias/Artigos
+        Alpine.data('newsSection', () => ({
+            posts: [],
+            loading: true,
+            init() {
+                // Escuta simplificada para evitar erros de índice iniciais
+                onSnapshot(collection(db, "publicacoes"), (snap) => {
+                    this.posts = snap.docs.map(d => ({
+                        id: d.id,
+                        ...d.data(),
+                        summary: (d.data().resume || "").substring(0, 120) + '...'
+                    }));
+                    // Ordenação manual por data decrescente
+                    this.posts.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+                    this.loading = false;
+                    setTimeout(() => {
+                        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+                    }, 500);
+                }, (err) => {
+                    console.error("Erro Firebase Notícias:", err);
+                    this.loading = false;
+                });
             }
-            pubContainer.innerHTML = ''; 
-            snapshot.forEach((doc) => {
-                const p = doc.data();
-                const article = document.createElement('article');
-                article.className = "group cursor-pointer border-l border-white/10 pl-6 hover:border-gold transition-all duration-500 reveal";
-                article.innerHTML = `
-                    <p class="text-[10px] text-gold font-bold mb-4 uppercase tracking-widest">${p.area} • ${p.date}</p>
-                    <h4 class="font-serif text-xl mb-4 group-hover:text-gold transition italic text-white">${p.title}</h4>
-                    <p class="text-gray-500 text-xs leading-relaxed line-clamp-3">${p.resume}</p>
-                    <span class="inline-block mt-4 text-[9px] text-white/30 uppercase tracking-[0.2em] group-hover:text-gold transition">Ler artigo completo +</span>
-                `;
-                article.onclick = () => window.dispatchEvent(new CustomEvent('open-post', { detail: p }));
-                pubContainer.appendChild(article);
-                revealObserver.observe(article);
-            });
+        }));
+
+        // Equipe
+        Alpine.data('teamSection', () => ({
+            members: [],
+            loading: true,
+            init() {
+                onSnapshot(collection(db, "equipe"), (snap) => {
+                    this.members = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    this.members.sort((a, b) => (a.order || 0) - (b.order || 0));
+                    this.loading = false;
+                    setTimeout(() => {
+                        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+                    }, 500);
+                }, (err) => {
+                    console.error("Erro Firebase Equipe:", err);
+                    this.loading = false;
+                });
+            }
+        }));
+
+        // Modal de Post
+        // (Já está declarado inline no HTML, mas podemos garantir o start global)
+
+        Alpine.start();
+
+        // --- 5. Controle do Preloader ---
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            const body = document.getElementById('body-tag');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.visibility = 'hidden';
+                    if (body) body.classList.remove('overflow-hidden');
+                }, 800);
+            }
         });
     </script>
+
+    <!-- WhatsApp Concierge -->
+    <a href="https://wa.me/551630261048" target="_blank" id="whatsapp-concierge" class="group">
+        <div class="concierge-bubble">Deseja atendimento especializado?</div>
+        <div class="bg-gold p-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                    d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.481 5.229 3.481 8.404c0 6.556-5.332 11.888-11.888 11.888-2.013 0-3.987-.51-5.742-1.478l-6.242 1.635zm6.312-3.208l.353.21c1.511.896 3.243 1.37 5.023 1.37 5.402 0 9.799-4.397 9.799-9.799 0-2.618-1.02-5.08-2.871-6.932-1.851-1.852-4.314-2.871-6.928-2.871-5.402 0-9.799 4.397-9.799 9.799 0 1.834.512 3.626 1.481 5.178l.233.372-1.091 3.987 4.094-1.073z" />
+            </svg>
+        </div>
+    </a>
 </body>
+
 </html>

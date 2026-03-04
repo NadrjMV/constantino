@@ -1,90 +1,429 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Administrativo | Constantino Advogados</title>
+    <title>Dashboard | Constantino Advogados</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { burgundy: '#4A1414', gold: '#C9A24D', softBlack: '#111111', sidebar: '#0D0D0D' },
-                    fontFamily: { serif: ['Cormorant Garamond', 'serif'], sans: ['Inter', 'sans-serif'] }
+                    colors: {
+                        burgundy: '#4A1414',
+                        gold: '#C9A24D',
+                        softBlack: '#111111',
+                        sidebar: '#0D0D0D',
+                        offWhite: '#FBFBF9'
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
                 }
             }
         }
     </script>
     <style>
-        .hidden { display: none !important; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #C9A24D; }
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #C9A24D;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .toast-enter {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+
+        .toast-enter-active {
+            transform: translateY(0);
+            opacity: 1;
+            transition: all 0.4s ease;
+        }
     </style>
 </head>
-<body class="bg-gray-50 font-sans text-softBlack overflow-hidden">
 
-    <div id="login-screen" class="h-screen w-full flex items-center justify-center bg-sidebar px-6">
-        <div class="bg-white p-10 w-full max-w-md shadow-2xl border-t-4 border-gold text-center">
-            <h1 class="font-serif text-3xl text-burgundy font-bold uppercase mb-8 italic">Constantino</h1>
-            <div class="space-y-4 text-left">
-                <input type="email" id="login-email" placeholder="E-mail" class="w-full border-b p-3 outline-none focus:border-burgundy text-sm">
-                <input type="password" id="login-pass" placeholder="Senha" class="w-full border-b p-3 outline-none focus:border-burgundy text-sm">
-                <button onclick="handleLogin()" class="w-full bg-burgundy text-white py-4 uppercase text-xs font-bold tracking-widest shadow-lg hover:bg-black transition">Acessar Sistema</button>
+<body class="bg-gray-50 font-sans text-softBlack h-screen overflow-hidden" x-data="adminApp">
+
+    <!-- Notificações Toast -->
+    <div class="fixed top-6 left-1/2 -translate-x-1/2 z-[200] space-y-3">
+        <template x-for="note in toasts" :key="note.id">
+            <div x-show="true" x-transition:enter="toast-enter-active"
+                class="bg-softBlack text-white px-6 py-3 shadow-2xl border-l-4 border-gold text-xs font-bold uppercase tracking-widest flex items-center gap-3">
+                <span x-text="note.msg"></span>
+            </div>
+        </template>
+    </div>
+
+    <!-- Tela de Login -->
+    <div x-show="!isLoggedIn"
+        class="h-screen w-full flex items-center justify-center bg-sidebar px-6 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" fill="white">
+                <rect x="10" y="10" width="1" height="80" opacity="0.3"></rect>
+                <rect x="90" y="10" width="1" height="80" opacity="0.3"></rect>
+            </svg>
+        </div>
+        <div class="bg-white p-12 w-full max-w-md shadow-2xl border-t-8 border-gold relative z-10">
+            <h1 class="font-serif text-4xl text-burgundy font-bold uppercase mb-2 text-center italic">Constantino</h1>
+            <p class="text-[9px] text-gray-400 uppercase tracking-[0.4em] mb-10 text-center font-bold">Acesso
+                Administrativo</p>
+            <div class="space-y-6">
+                <div class="group">
+                    <label
+                        class="text-[9px] uppercase tracking-widest text-gray-400 font-bold group-focus-within:text-gold transition-colors">E-mail
+                        Corporativo</label>
+                    <input type="email" x-model="loginEmail"
+                        class="w-full border-b border-gray-100 p-3 outline-none focus:border-gold transition-all bg-transparent text-sm">
+                </div>
+                <div class="group mb-8">
+                    <label
+                        class="text-[9px] uppercase tracking-widest text-gray-400 font-bold group-focus-within:text-gold transition-colors">Senha
+                        de Acesso</label>
+                    <input type="password" x-model="loginPass"
+                        class="w-full border-b border-gray-100 p-3 outline-none focus:border-gold transition-all bg-transparent text-sm">
+                </div>
+                <button @click="handleLogin"
+                    class="w-full bg-burgundy text-white py-5 uppercase text-[10px] font-bold tracking-[0.2em] shadow-xl hover:bg-gold transition-all duration-500">
+                    Entrar no Sistema
+                </button>
             </div>
         </div>
     </div>
 
-    <div id="admin-panel" class="flex h-screen w-full hidden">
-        <aside class="w-64 bg-sidebar text-white flex flex-col">
-            <div class="p-8 border-b border-white/5">
-                <h2 class="font-serif text-2xl font-bold italic">Constantino</h2>
-                <p id="user-role-badge" class="text-[9px] uppercase tracking-widest text-gold mt-1 font-bold"></p>
-            </div>
-            <nav class="flex-1 p-6 space-y-2 text-[10px] uppercase font-bold text-gray-400">
-                <button onclick="showSection('publicacoes')" class="w-full text-left p-4 rounded hover:bg-white/5 transition">Publicações</button>
-                <div id="owner-menu" class="hidden">
-                    <button onclick="showSection('usuarios')" class="w-full text-left p-4 rounded hover:bg-white/5 transition">Gestão de Owners</button>
+    <!-- Painel Administrativo -->
+    <div x-show="isLoggedIn" x-cloak class="flex h-screen w-full">
+        <!-- Sidebar -->
+        <aside class="w-72 bg-sidebar text-white flex flex-col shadow-2xl z-50">
+            <div class="p-10 border-b border-white/5 mb-6">
+                <h2 class="font-serif text-3xl font-bold italic text-gold">Constantino</h2>
+                <div class="flex items-center gap-2 mt-3">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <p x-text="userRole" class="text-[9px] uppercase tracking-widest text-gray-400 font-bold"></p>
                 </div>
-                <button onclick="handleLogout()" class="w-full text-left p-4 text-burgundy mt-10 hover:text-red-500">Sair</button>
+            </div>
+            <nav class="flex-1 px-4 space-y-1">
+                <button @click="currentSection = 'publicacoes'"
+                    :class="currentSection === 'publicacoes' ? 'bg-white/5 text-gold' : 'text-gray-400'"
+                    class="w-full text-left p-5 rounded-lg hover:bg-white/5 transition group flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest">
+                    <span class="w-1.5 h-1.5 rounded-full border border-current"></span>
+                    Artigos / Doutrina
+                </button>
+                <button @click="currentSection = 'equipe'"
+                    :class="currentSection === 'equipe' ? 'bg-white/5 text-gold' : 'text-gray-400'"
+                    class="w-full text-left p-5 rounded-lg hover:bg-white/5 transition group flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest">
+                    <span class="w-1.5 h-1.5 rounded-full border border-current"></span>
+                    Gestão de Equipe
+                </button>
+                <template x-if="userRole === 'Acesso Proprietário'">
+                    <button @click="currentSection = 'usuarios'"
+                        :class="currentSection === 'usuarios' ? 'bg-white/5 text-gold' : 'text-gray-400'"
+                        class="w-full text-left p-5 rounded-lg hover:bg-white/5 transition group flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest">
+                        <span class="w-1.5 h-1.5 rounded-full border border-current"></span>
+                        Segurança & Owners
+                    </button>
+                </template>
             </nav>
+            <div class="p-8 mt-auto border-t border-white/5">
+                <button @click="handleLogout"
+                    class="w-full text-center py-4 text-[9px] uppercase tracking-widest font-bold text-burgundy hover:text-red-500 transition-colors border border-white/5">
+                    Encerrar Sessão
+                </button>
+            </div>
         </aside>
 
-        <main class="flex-1 flex flex-col overflow-hidden bg-white">
-            <header class="h-20 border-b flex items-center justify-between px-10">
-                <h3 id="section-title" class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Constantino / Publicações</h3>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <header
+                class="h-24 bg-white border-b border-gray-100 flex items-center justify-between px-12 shadow-sm z-40">
+                <nav class="flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] font-bold">
+                    <span class="text-gray-300">Dashboard</span>
+                    <span class="text-gray-200">/</span>
+                    <span class="text-gold"
+                        x-text="currentSection === 'publicacoes' ? 'Artigos' : (currentSection === 'equipe' ? 'Equipe' : 'Segurança')"></span>
+                </nav>
+                <div class="flex items-center gap-6">
+                    <template x-if="currentSection === 'publicacoes'">
+                        <button @click="openEditModal()"
+                            class="bg-gold text-white px-8 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-burgundy transition-all shadow-lg">
+                            Novo Artigo
+                        </button>
+                    </template>
+                    <template x-if="currentSection === 'equipe'">
+                        <button @click="openMemberModal()"
+                            class="bg-gold text-white px-8 py-3 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-burgundy transition-all shadow-lg">
+                            Adicionar Integrante
+                        </button>
+                    </template>
+                </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto p-10 custom-scrollbar">
-                <section id="sec-publicacoes">
-                    <div class="flex justify-between items-end mb-8 border-b pb-4">
-                        <h2 class="text-3xl font-serif text-burgundy italic font-bold">Doutrina Jurídica</h2>
-                        <button onclick="openModal()" class="bg-gold text-white px-6 py-2 text-[10px] font-bold uppercase tracking-widest">Nova Publicação</button>
-                    </div>
-                    <div id="posts-list" class="grid gap-4">
+            <!-- Seções -->
+            <div class="flex-1 overflow-y-auto p-12 bg-gray-50/50 custom-scrollbar">
+
+                <!-- Publicações -->
+                <section x-show="currentSection === 'publicacoes'" x-transition>
+                    <div class="grid lg:grid-cols-4 gap-6 mb-12">
+                        <div class="bg-white p-6 border-l-4 border-gold shadow-sm">
+                            <p class="text-[9px] uppercase text-gray-400 font-bold mb-1">Total de Publicações</p>
+                            <p x-text="posts.length" class="font-serif text-3xl text-sidebar"></p>
                         </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <template x-for="post in posts" :key="post.id">
+                            <div
+                                class="bg-white group p-8 shadow-sm hover:shadow-xl transition-all border border-gray-100 flex justify-between items-center relative overflow-hidden">
+                                <div
+                                    class="absolute left-0 top-0 bottom-0 w-1 bg-gray-100 group-hover:bg-gold transition-colors">
+                                </div>
+                                <div class="max-w-xl">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span
+                                            class="text-[9px] bg-gray-50 text-gold px-2 py-1 rounded font-bold uppercase tracking-widest"
+                                            x-text="post.area"></span>
+                                        <span class="text-[9px] text-gray-300 font-bold" x-text="post.date"></span>
+                                    </div>
+                                    <h4 class="font-serif text-xl font-bold text-burgundy mb-2" x-text="post.title">
+                                    </h4>
+                                    <p class="text-xs text-gray-400 line-clamp-1 italic" x-text="post.resume"></p>
+                                </div>
+                                <div
+                                    class="flex gap-4 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
+                                    <button @click="openEditModal(post)"
+                                        class="text-[10px] font-bold uppercase text-sidebar hover:text-gold transition">Editar</button>
+                                    <button @click="handleDelete(post.id, 'publicacoes')"
+                                        class="text-[10px] font-bold uppercase text-red-400 hover:text-red-700 transition">Excluir</button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </section>
 
-                <section id="sec-usuarios" class="hidden">
-                    <h2 class="text-3xl font-serif text-burgundy italic font-bold mb-6">Gestão de Owners</h2>
-                    <p class="text-gray-400 italic">Módulo exclusivo ativado.</p>
+                <!-- Gestão de Equipe -->
+                <section x-show="currentSection === 'equipe'" x-transition>
+                    <div class="grid lg:grid-cols-4 gap-6 mb-12">
+                        <div class="bg-white p-6 border-l-4 border-gold shadow-sm">
+                            <p class="text-[9px] uppercase text-gray-400 font-bold mb-1">Membros Ativos</p>
+                            <p x-text="team.length" class="font-serif text-3xl text-sidebar"></p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <template x-for="(member, index) in team" :key="member.id">
+                            <div
+                                class="bg-white group shadow-sm hover:shadow-2xl transition-all border border-gray-100 flex flex-col relative overflow-hidden">
+                                <div class="aspect-[3/4] bg-gray-100 overflow-hidden relative">
+                                    <img :src="member.photo || 'https://via.placeholder.com/400x533?text=Sem+Foto'"
+                                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                                    <div
+                                        class="absolute inset-0 bg-sidebar/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                        <button @click="openMemberModal(member)"
+                                            class="bg-white text-sidebar px-4 py-2 text-[9px] font-bold uppercase tracking-widest">Editar
+                                            Perfil</button>
+                                        <button @click="handleDelete(member.id, 'equipe')"
+                                            class="bg-red-600 text-white px-4 py-2 text-[9px] font-bold uppercase tracking-widest">Remover</button>
+                                    </div>
+                                    <div class="absolute top-4 left-4 bg-gold text-white text-[8px] font-bold px-2 py-1 uppercase tracking-widest"
+                                        x-text="'Ordem: ' + (member.order || (index + 1))"></div>
+                                </div>
+                                <div class="p-6">
+                                    <h4 class="font-serif text-xl font-bold text-burgundy mb-1" x-text="member.name">
+                                    </h4>
+                                    <p class="text-[9px] text-gold uppercase tracking-widest font-bold"
+                                        x-text="member.role"></p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </section>
+
+                <!-- Gestão de Usuários -->
+                <section x-show="currentSection === 'usuarios'" x-transition>
+                    <div class="bg-white p-12 shadow-sm border border-gray-100 max-w-2xl">
+                        <h2 class="text-3xl font-serif text-burgundy italic mb-4">Módulo de Segurança</h2>
+                        <p class="text-sm text-gray-400 leading-relaxed mb-6 italic">A gestão de permissões de alto
+                            nível é restrita aos sócios proprietários.</p>
+                        <div class="p-6 bg-gray-50 border-l border-gold flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold">
+                                🛡️</div>
+                            <p class="text-xs font-bold uppercase tracking-widest text-sidebar">Criptografia Ativa</p>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </main>
     </div>
 
-    <div id="post-modal" class="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-6 hidden">
-        <div class="bg-white max-w-xl w-full p-10 shadow-2xl">
-            <h3 id="modal-title" class="font-serif text-2xl text-burgundy mb-6 italic">Cadastrar Artigo</h3>
-            <input type="hidden" id="edit-id">
-            <div class="space-y-4">
-                <input type="text" id="post-title" placeholder="Título" class="w-full border p-3 text-sm outline-none">
-                <input type="text" id="post-area" placeholder="Área" class="w-full border p-3 text-sm outline-none">
-                <input type="text" id="post-date" placeholder="Data (Ex: Jan 2026)" class="w-full border p-3 text-sm outline-none">
-                <textarea id="post-resume" placeholder="Resumo" class="w-full border p-3 text-sm h-32 outline-none"></textarea>
+    <!-- Modal Artigo -->
+    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-[150] flex items-center justify-center p-6 lg:p-12">
+        <div @click="modalOpen = false" class="absolute inset-0 bg-sidebar/90 backdrop-blur-sm"></div>
+
+        <div
+            class="relative bg-white w-full max-w-7xl h-full flex flex-col shadow-2xl overflow-hidden border-t-8 border-gold">
+            <div class="flex flex-1 overflow-hidden">
+                <!-- Editor -->
+                <div class="w-full lg:w-1/2 p-12 overflow-y-auto custom-scrollbar border-r">
+                    <div class="flex justify-between items-center mb-10">
+                        <h3 class="font-serif text-3xl text-burgundy italic"
+                            x-text="editId ? 'Refinar Artigo' : 'Nova Obra'"></h3>
+                        <p class="text-[10px] text-gray-300 uppercase tracking-widest font-bold">Modo Editor</p>
+                    </div>
+                    <div class="space-y-8">
+                        <div class="group">
+                            <label
+                                class="block text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Título
+                                do Artigo</label>
+                            <input type="text" x-model="editingPost.title"
+                                class="w-full border-b focus:border-gold p-2 outline-none text-xl font-serif italic text-burgundy bg-transparent">
+                        </div>
+                        <div class="grid grid-cols-2 gap-8">
+                            <div>
+                                <label
+                                    class="block text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Área
+                                    Jurídica</label>
+                                <input type="text" x-model="editingPost.area"
+                                    class="w-full border-b focus:border-gold p-2 outline-none text-xs bg-transparent">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Data
+                                    / Edição</label>
+                                <input type="text" x-model="editingPost.date" placeholder="Mar 2026"
+                                    class="w-full border-b focus:border-gold p-2 outline-none text-xs bg-transparent">
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Conteúdo
+                                / Resumo</label>
+                            <textarea x-model="editingPost.resume"
+                                class="w-full border p-4 focus:border-gold h-64 outline-none text-sm leading-relaxed bg-gray-50/30 custom-scrollbar"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Real-time -->
+                <div class="hidden lg:block lg:w-1/2 bg-offWhite p-16 overflow-y-auto custom-scrollbar relative">
+                    <div
+                        class="absolute top-8 right-8 text-[9px] text-gold font-bold uppercase tracking-widest bg-white px-3 py-1 shadow-sm">
+                        Preview Visual</div>
+                    <div class="max-w-xl mx-auto">
+                        <div class="mb-10 flex items-center justify-between border-b pb-6">
+                            <p class="text-[10px] text-gold font-bold uppercase tracking-[0.3em]"
+                                x-text="(editingPost.area || 'ÁREA') + ' • ' + (editingPost.date || 'DATA')"></p>
+                        </div>
+                        <h2 class="font-serif text-4xl text-burgundy italic mb-10 leading-tight"
+                            x-text="editingPost.title || 'Título da Publicação'"></h2>
+                        <div class="prose prose-burgundy max-w-none text-gray-700 leading-relaxed font-light text-lg italic border-l-2 border-gold/20 pl-8 whitespace-pre-line"
+                            x-text="editingPost.resume || 'O conteúdo aparecerá aqui enquanto você digita...'"></div>
+                    </div>
+                </div>
             </div>
-            <div class="mt-8 flex justify-end space-x-4">
-                <button onclick="closeModal()" class="text-[10px] font-bold uppercase text-gray-400">Cancelar</button>
-                <button onclick="savePost()" class="bg-burgundy text-white px-8 py-3 text-[10px] font-bold uppercase">Salvar</button>
+
+            <div class="h-24 bg-gray-50 border-t flex items-center justify-between px-12">
+                <button @click="modalOpen = false"
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-sidebar transition">Cancelar
+                    Alterações</button>
+                <button @click="handleSave('publicacoes')"
+                    class="bg-burgundy text-white px-12 py-4 text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg hover:bg-black transition-all">Publicar
+                    no Site</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Equipe -->
+    <div x-show="memberModalOpen" x-cloak class="fixed inset-0 z-[150] flex items-center justify-center p-6 lg:p-12">
+        <div @click="memberModalOpen = false" class="absolute inset-0 bg-sidebar/90 backdrop-blur-sm"></div>
+        <div
+            class="relative bg-white w-full max-w-7xl h-full flex flex-col shadow-2xl overflow-hidden border-t-8 border-gold">
+            <div class="flex flex-1 overflow-hidden">
+                <div class="w-full lg:w-1/2 p-12 overflow-y-auto custom-scrollbar border-r">
+                    <h3 class="font-serif text-3xl text-burgundy italic mb-10"
+                        x-text="editId ? 'Refinar Perfil' : 'Novo Integrante'"></h3>
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label
+                                    class="block text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Nome
+                                    Completo</label>
+                                <input type="text" x-model="editingMember.name"
+                                    class="w-full border-b focus:border-gold p-2 outline-none text-sm bg-transparent">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Ordem
+                                    de Exibição</label>
+                                <input type="number" x-model="editingMember.order"
+                                    class="w-full border-b focus:border-gold p-2 outline-none text-sm bg-transparent">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Cargo
+                                / Especialidade</label>
+                            <input type="text" x-model="editingMember.role"
+                                class="w-full border-b focus:border-gold p-2 outline-none text-sm bg-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">URL
+                                da Foto (WebP/PNG)</label>
+                            <input type="text" x-model="editingMember.photo"
+                                placeholder="fotos/Nome.webp ou link externo"
+                                class="w-full border-b focus:border-gold p-2 outline-none text-xs bg-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] uppercase tracking-widest text-gray-400 font-bold mb-2">Texto
+                                Biográfico</label>
+                            <textarea x-model="editingMember.bio"
+                                class="w-full border p-4 focus:border-gold h-48 outline-none text-sm leading-relaxed bg-gray-50/30 custom-scrollbar"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden lg:block lg:w-1/2 bg-white p-16 overflow-y-auto custom-scrollbar relative">
+                    <div
+                        class="absolute top-8 right-8 text-[9px] text-gold font-bold uppercase tracking-widest bg-gray-50 px-3 py-1 shadow-sm">
+                        Preview do Site</div>
+                    <div class="max-w-xl mx-auto py-12">
+                        <div class="grid grid-cols-12 gap-8 items-center">
+                            <div class="col-span-4 aspect-[3/4] bg-burgundy/5 overflow-hidden">
+                                <img :src="editingMember.photo || 'https://via.placeholder.com/400x533?text=Sem+Foto'"
+                                    class="w-full h-full object-cover grayscale">
+                            </div>
+                            <div class="col-span-8">
+                                <h4 class="font-serif text-2xl text-burgundy italic mb-1"
+                                    x-text="editingMember.name || 'Nome do Advogado'"></h4>
+                                <p class="text-gold text-[8px] uppercase tracking-widest font-bold mb-4"
+                                    x-text="editingMember.role || 'Cargo'"></p>
+                                <p class="text-gray-600 text-[11px] italic leading-relaxed whitespace-pre-line"
+                                    x-text="editingMember.bio || 'A biografia aparecerá aqui...'"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="h-24 bg-gray-50 border-t flex items-center justify-between px-12">
+                <button @click="memberModalOpen = false"
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-sidebar transition">Cancelar</button>
+                <button @click="handleSave('equipe')"
+                    class="bg-gold text-white px-12 py-4 text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg hover:bg-burgundy transition-all">Salvar
+                    Perfil</button>
             </div>
         </div>
     </div>
@@ -107,79 +446,130 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Funções Globais
-        window.handleLogin = () => {
-            const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-pass').value;
-            signInWithEmailAndPassword(auth, email, pass).catch(e => alert("Erro: " + e.message));
-        };
+        // Importando Alpine dinamicamente para garantir a ordem
+        import('https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/module.esm.js').then(module => {
+            const Alpine = module.default;
 
-        window.handleLogout = () => signOut(auth).then(() => location.reload());
+            Alpine.data('adminApp', () => ({
+                isLoggedIn: false,
+                loginEmail: '',
+                loginPass: '',
+                userRole: 'admin',
+                currentSection: 'publicacoes',
+                posts: [],
+                team: [],
+                modalOpen: false,
+                memberModalOpen: false,
+                editId: null,
+                editingPost: { title: '', area: '', date: '', resume: '' },
+                editingMember: { name: '', role: '', bio: '', photo: '', order: 1 },
+                toasts: [],
 
-        window.showSection = (name) => {
-            document.getElementById('sec-publicacoes').classList.toggle('hidden', name !== 'publicacoes');
-            document.getElementById('sec-usuarios').classList.toggle('hidden', name !== 'usuarios');
-            document.getElementById('section-title').innerText = `Constantino / ${name}`;
-        };
+                init() {
+                    onAuthStateChanged(auth, async (user) => {
+                        if (user) {
+                            this.isLoggedIn = true;
+                            let role = 'Acesso Administrador';
 
-        window.openModal = (id = null, data = null) => {
-            document.getElementById('edit-id').value = id || '';
-            document.getElementById('post-title').value = data?.title || '';
-            document.getElementById('post-area').value = data?.area || '';
-            document.getElementById('post-date').value = data?.date || '';
-            document.getElementById('post-resume').value = data?.resume || '';
-            document.getElementById('modal-title').innerText = id ? 'Editar Publicação' : 'Cadastrar Artigo';
-            document.getElementById('post-modal').classList.remove('hidden');
-        };
+                            try {
+                                const userDoc = await getDoc(doc(db, "users", user.uid));
+                                if (userDoc.exists() && userDoc.data().role === 'owner') {
+                                    role = 'Acesso Proprietário';
+                                }
+                            } catch (e) {
+                                console.warn("Firestore: Permissões padrões.");
+                            }
 
-        window.closeModal = () => document.getElementById('post-modal').classList.add('hidden');
-
-        window.savePost = async () => {
-            const id = document.getElementById('edit-id').value;
-            const payload = {
-                title: document.getElementById('post-title').value,
-                area: document.getElementById('post-area').value,
-                date: document.getElementById('post-date').value,
-                resume: document.getElementById('post-resume').value
-            };
-            id ? await updateDoc(doc(db, "publicacoes", id), payload) : await addDoc(collection(db, "publicacoes"), payload);
-            closeModal();
-        };
-
-        window.deletePost = (id) => confirm('Excluir?') && deleteDoc(doc(db, "publicacoes", id));
-
-        // Monitor de Estado
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                const role = userDoc.exists() ? userDoc.data().role : 'admin';
-                document.getElementById('user-role-badge').innerText = role === 'owner' ? 'Acesso Proprietário' : 'Acesso Administrador';
-                if(role === 'owner') document.getElementById('owner-menu').classList.remove('hidden');
-
-                const q = query(collection(db, "publicacoes"), orderBy("date", "desc"));
-                onSnapshot(q, (snap) => {
-                    const list = document.getElementById('posts-list');
-                    list.innerHTML = '';
-                    snap.forEach(d => {
-                        const p = d.data();
-                        list.innerHTML += `
-                            <div class="border p-6 flex justify-between items-center bg-gray-50">
-                                <div>
-                                    <h4 class="font-bold">${p.title}</h4>
-                                    <p class="text-[10px] text-gold uppercase font-bold">${p.area} • ${p.date}</p>
-                                </div>
-                                <div class="space-x-4">
-                                    <button onclick='openModal("${d.id}", ${JSON.stringify(p)})' class="text-[10px] font-bold uppercase text-gray-400 hover:text-burgundy">Editar</button>
-                                    <button onclick="deletePost('${d.id}')" class="text-[10px] font-bold uppercase text-red-800">Remover</button>
-                                </div>
-                            </div>`;
+                            this.userRole = role;
+                            this.loadData();
+                        } else {
+                            this.isLoggedIn = false;
+                        }
                     });
-                });
-            }
+                },
+
+                addToast(msg) {
+                    const id = Date.now();
+                    this.toasts.push({ id, msg });
+                    setTimeout(() => { this.toasts = this.toasts.filter(t => t.id !== id) }, 3000);
+                },
+
+                handleLogin() {
+                    signInWithEmailAndPassword(auth, this.loginEmail, this.loginPass)
+                        .then(() => this.addToast("Sessão Iniciada"))
+                        .catch(e => alert("Erro: " + e.message));
+                },
+
+                handleLogout() {
+                    signOut(auth).then(() => {
+                        this.isLoggedIn = false;
+                        location.reload();
+                    });
+                },
+
+                loadData() {
+                    console.log("Iniciando Escuta de Dados...");
+                    const qPosts = query(collection(db, "publicacoes"), orderBy("date", "desc"));
+                    onSnapshot(qPosts, (snap) => {
+                        this.posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    }, (err) => {
+                        console.error("Erro na escuta de Artigos:", err.message);
+                        if (err.code === 'permission-denied') this.addToast("Erro: Altere as Rules do Firebase");
+                    });
+
+                    const qTeam = query(collection(db, "equipe"), orderBy("order", "asc"));
+                    onSnapshot(qTeam, (snap) => {
+                        this.team = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                        console.log("Equipe Atualizada:", this.team.length);
+                    }, (err) => {
+                        console.error("Erro na escuta de Equipe:", err.message);
+                    });
+                },
+
+                openEditModal(post = null) {
+                    this.editId = post ? post.id : null;
+                    this.editingPost = post ? { ...post } : { title: '', area: '', date: '', resume: '' };
+                    this.modalOpen = true;
+                },
+
+                openMemberModal(member = null) {
+                    this.editId = member ? member.id : null;
+                    this.editingMember = member ? { ...member } : { name: '', role: '', bio: '', photo: '', order: this.team.length + 1 };
+                    this.memberModalOpen = true;
+                },
+
+                async handleSave(collectionName) {
+                    const data = collectionName === 'publicacoes' ? { ...this.editingPost } : { ...this.editingMember };
+                    if (!data.title && !data.name) return alert("Preencha o campo principal");
+
+                    try {
+                        if (this.editId) {
+                            await updateDoc(doc(db, collectionName, this.editId), data);
+                            this.addToast("Atualizado com sucesso");
+                        } else {
+                            await addDoc(collection(db, collectionName), data);
+                            this.addToast("Cadastrado com sucesso");
+                        }
+                        this.modalOpen = false;
+                        this.memberModalOpen = false;
+                        this.editId = null;
+                    } catch (e) {
+                        console.error("Erro ao salvar:", e);
+                        alert("Erro de permissão! Verifique se você publicou as regras no Firebase.");
+                    }
+                },
+
+                async handleDelete(id, collectionName) {
+                    if (confirm("Remover permanentemente?")) {
+                        await deleteDoc(doc(db, collectionName, id));
+                        this.addToast("Removido");
+                    }
+                }
+            }));
+
+            Alpine.start();
         });
     </script>
 </body>
+
 </html>
