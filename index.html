@@ -7,7 +7,8 @@
     <meta name="robots" content="index, follow">
     <meta name="description"
         content="Constantino Advogados - Escritório especializado em Direito Público e Privado. Liderança técnica e rigor acadêmico sob o comando do Prof. Carlos Ernani Constantino e sócios.">
-    <title>Constantino Advogados | Excelência Jurídica e Acadêmica</title>
+    <title>Advogados | Excelência Jurídica e Acadêmica</title>
+    <link rel="icon" type="image/png" href="favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -128,6 +129,31 @@
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #C9A24D;
+        }
+
+        /* Barra de Rolagem Global Customizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #C9A24D;
+            border-radius: 10px;
+            border: 2px solid #111111;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e2c07a;
+        }
+
+        /* Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #C9A24D #111111;
         }
 
         /* Otimizações de Performance de Renderização */
@@ -279,20 +305,14 @@
 
     <!-- Preloader Global -->
     <div id="preloader">
-        <div class="text-burgundy font-serif text-3xl mb-4 tracking-tighter flex flex-col items-center">
-            <span class="font-bold">CONSTANTINO</span>
-            <span class="text-[10px] tracking-[0.4em] text-gold mt-1 uppercase">Advogados</span>
-        </div>
+        <img src="logo.png" alt="Constantino Advogados" class="h-16 mb-6 brightness-0 invert">
         <div class="loader-ring"></div>
     </div>
 
     <header x-data="{ open: false }" class="fixed w-full z-50 glass border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="flex items-center">
-                <div class="text-burgundy font-serif text-2xl tracking-tighter flex flex-col leading-none">
-                    <span class="font-bold">CONSTANTINO</span>
-                    <span class="text-[10px] tracking-[0.4em] text-gold mt-1 uppercase">Advogados</span>
-                </div>
+                <img src="logo.png" alt="Constantino Advogados" class="h-10 lg:h-12 w-auto object-contain">
             </a>
 
             <div class="hidden lg:flex items-center">
@@ -323,12 +343,57 @@
             </button>
         </div>
 
-        <div x-show="open" x-cloak
-            class="lg:hidden bg-white border-t p-6 space-y-4 text-center text-[10px] tracking-widest uppercase font-bold">
-            <a href="#escritorio" @click="open = false" class="block py-2">O Escritório</a>
-            <a href="#atuacao" @click="open = false" class="block py-2">Áreas de Atuação</a>
-            <a href="#advogados" @click="open = false" class="block py-2">Advogados</a>
-            <a href="#contato" @click="open = false" class="block py-2 text-gold">Contato</a>
+        <!-- Menu Mobile Sidebar -->
+        <div x-show="open" x-cloak class="fixed inset-0 z-[100] lg:hidden">
+            <!-- Overlay -->
+            <div x-show="open" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0" @click="open = false"
+                class="absolute inset-0 bg-softBlack/80 backdrop-blur-sm"></div>
+
+            <!-- Sidebar -->
+            <div x-show="open" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+                x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0"
+                x-transition:leave-end="translate-x-full"
+                class="absolute right-0 top-0 h-full w-80 bg-softBlack border-l border-gold/30 shadow-2xl p-8 flex flex-col">
+
+                <div class="flex justify-between items-center mb-12">
+                    <img src="logo.png" alt="Logo" class="h-8 brightness-0 invert">
+                    <button @click="open = false" class="text-gold">
+                        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </div>
+
+                <nav class="flex flex-col space-y-2 flex-1">
+                    <a href="#escritorio" @click="open = false"
+                        class="text-[11px] uppercase tracking-[0.3em] font-bold text-gray-400 py-4 border-b border-white/5 hover:text-gold transition-colors">O
+                        Escritório</a>
+                    <a href="#atuacao" @click="open = false"
+                        class="text-[11px] uppercase tracking-[0.3em] font-bold text-gray-400 py-4 border-b border-white/5 hover:text-gold transition-colors">Áreas
+                        de Atuação</a>
+                    <a href="#advogados" @click="open = false"
+                        class="text-[11px] uppercase tracking-[0.3em] font-bold text-gray-400 py-4 border-b border-white/5 hover:text-gold transition-colors">Corpo
+                        Jurídico</a>
+                    <a href="#publicacoes" @click="open = false"
+                        class="text-[11px] uppercase tracking-[0.3em] font-bold text-gray-400 py-4 border-b border-white/5 hover:text-gold transition-colors">Publicações</a>
+                </nav>
+
+                <div class="mt-auto">
+                    <a href="#contato" @click="open = false"
+                        class="block w-full text-center bg-gold text-white py-4 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-opacity-90 transition shadow-lg">
+                        Atendimento Profissional
+                    </a>
+                    <div class="flex justify-center gap-6 mt-8">
+                        <span class="text-[9px] uppercase tracking-widest text-gold font-bold">PT</span>
+                        <span class="text-[9px] uppercase tracking-widest text-gray-500">EN</span>
+                        <span class="text-[9px] uppercase tracking-widest text-gray-500">ES</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -645,9 +710,7 @@
     <footer id="contato" class="bg-softBlack text-white pt-24 pb-12">
         <div class="max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-3 gap-20">
             <div>
-                <h4 class="font-serif text-2xl text-white italic">Constantino <br><span
-                        class="text-gold uppercase text-xs tracking-[0.3em] font-sans not-italic font-bold">Advogados</span>
-                </h4>
+                <img src="logo.png" alt="Constantino Advogados" class="h-12 brightness-0 invert opacity-90 mb-6">
                 <p class="text-gray-500 text-xs leading-relaxed mt-6 italic">
                     Fundamentado na Ciência Jurídica e no compromisso ético com a justiça. Atuação rigorosa em
                     conformidade com o Código de Ética e Disciplina da OAB.

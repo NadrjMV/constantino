@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Constantino Advogados</title>
+    <title>Painel Administrativo | Constantino Advogados</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600&display=swap"
@@ -39,6 +40,30 @@
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #C9A24D;
+        }
+
+        /* Barra de Rolagem Global Customizada */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0D0D0D;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #C9A24D;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e2c07a;
+        }
+
+        /* Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #C9A24D #0D0D0D;
         }
 
         .glass-card {
@@ -81,7 +106,7 @@
             </svg>
         </div>
         <div class="bg-white p-12 w-full max-w-md shadow-2xl border-t-8 border-gold relative z-10">
-            <h1 class="font-serif text-4xl text-burgundy font-bold uppercase mb-2 text-center italic">Constantino</h1>
+            <img src="logo.png" alt="Constantino" class="h-12 mx-auto mb-4">
             <p class="text-[9px] text-gray-400 uppercase tracking-[0.4em] mb-10 text-center font-bold">Acesso
                 Administrativo</p>
             <div class="space-y-6">
@@ -110,39 +135,57 @@
     <!-- Painel Administrativo -->
     <div x-show="isLoggedIn" x-cloak class="flex h-screen w-full">
         <!-- Sidebar -->
-        <aside class="w-72 bg-sidebar text-white flex flex-col shadow-2xl z-50">
-            <div class="p-10 border-b border-white/5 mb-6">
-                <h2 class="font-serif text-3xl font-bold italic text-gold">Constantino</h2>
-                <div class="flex items-center gap-2 mt-3">
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <p x-text="userRole" class="text-[9px] uppercase tracking-widest text-gray-400 font-bold"></p>
+        <aside
+            class="w-72 bg-sidebar border-r border-gold/20 text-white flex flex-col shadow-2xl z-50 relative overflow-hidden">
+            <!-- Efeito de gradiente dourado no topo -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gold/5 blur-[100px] pointer-events-none"></div>
+
+            <div class="p-10 border-b border-white/5 mb-6 relative">
+                <img src="logo.png" alt="Constantino"
+                    class="h-10 brightness-0 invert mx-auto drop-shadow-[0_0_8px_rgba(201,162,77,0.3)]">
+                <div class="flex items-center justify-center gap-2 mt-4">
+                    <div class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shadow-[0_0_10px_#C9A24D]"></div>
+                    <p x-text="userRole" class="text-[8px] uppercase tracking-[0.3em] text-gold/80 font-bold"></p>
                 </div>
             </div>
-            <nav class="flex-1 px-4 space-y-1">
+
+            <nav class="flex-1 px-6 space-y-2">
                 <button @click="currentSection = 'publicacoes'"
-                    :class="currentSection === 'publicacoes' ? 'bg-white/5 text-gold' : 'text-gray-400'"
-                    class="w-full text-left p-5 rounded-lg hover:bg-white/5 transition group flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest">
-                    <span class="w-1.5 h-1.5 rounded-full border border-current"></span>
+                    :class="currentSection === 'publicacoes' ? 'bg-gold/10 text-gold border-gold/40' : 'text-gray-400 border-transparent'"
+                    class="w-full text-left p-4 rounded-xl border hover:bg-white/5 transition-all duration-300 group flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z"></path>
+                    </svg>
                     Artigos / Doutrina
                 </button>
                 <button @click="currentSection = 'equipe'"
-                    :class="currentSection === 'equipe' ? 'bg-white/5 text-gold' : 'text-gray-400'"
-                    class="w-full text-left p-5 rounded-lg hover:bg-white/5 transition group flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest">
-                    <span class="w-1.5 h-1.5 rounded-full border border-current"></span>
+                    :class="currentSection === 'equipe' ? 'bg-gold/10 text-gold border-gold/40' : 'text-gray-400 border-transparent'"
+                    class="w-full text-left p-4 rounded-xl border hover:bg-white/5 transition-all duration-300 group flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                    </svg>
                     Gestão de Equipe
                 </button>
                 <template x-if="userRole === 'Acesso Proprietário'">
                     <button @click="currentSection = 'usuarios'"
-                        :class="currentSection === 'usuarios' ? 'bg-white/5 text-gold' : 'text-gray-400'"
-                        class="w-full text-left p-5 rounded-lg hover:bg-white/5 transition group flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest">
-                        <span class="w-1.5 h-1.5 rounded-full border border-current"></span>
-                        Segurança & Owners
+                        :class="currentSection === 'usuarios' ? 'bg-gold/10 text-gold border-gold/40' : 'text-gray-400 border-transparent'"
+                        class="w-full text-left p-4 rounded-xl border hover:bg-white/5 transition-all duration-300 group flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                            </path>
+                        </svg>
+                        Segurança
                     </button>
                 </template>
             </nav>
-            <div class="p-8 mt-auto border-t border-white/5">
+
+            <div class="p-8 border-t border-white/5 bg-black/20">
                 <button @click="handleLogout"
-                    class="w-full text-center py-4 text-[9px] uppercase tracking-widest font-bold text-burgundy hover:text-red-500 transition-colors border border-white/5">
+                    class="w-full text-center py-4 rounded-lg bg-burgundy/20 text-[9px] uppercase tracking-widest font-bold text-gray-400 hover:text-red-400 hover:bg-red-400/5 transition-all duration-300 border border-white/5">
                     Encerrar Sessão
                 </button>
             </div>
