@@ -61,10 +61,15 @@
                     }
                 }
             }
-        }
+        };
     </script>
 
     <style>
+        body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         .glass {
             background: rgba(251, 251, 249, 0.95);
             backdrop-filter: blur(12px);
@@ -102,6 +107,14 @@
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        @media (max-width: 1024px) {
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
         }
 
         /* Parallax nas fotos dos advogados */
@@ -153,6 +166,23 @@
         #advogados:has(.advogado-card:hover) .advogado-card:not(:hover) {
             opacity: 0.6;
             filter: grayscale(0.5);
+        }
+
+        .advogado-card:hover {
+            z-index: 10;
+        }
+
+        /* Melhora no espaçamento Mobile */
+        @media (max-width: 768px) {
+            .space-y-32 {
+                gap: 5rem;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #advogados .space-y-32 {
+                margin-top: 2rem;
+            }
         }
 
         /* Botão Concierge */
@@ -342,7 +372,7 @@
                     <div class="overflow-hidden bg-burgundy/5 skeleton aspect-[3/4] lg:aspect-auto">
                         <img loading="eager" decoding="async" src="fotos/Equipe.webp" alt="Equipe Constantino Advogados"
                             width="1200" height="800" onload="this.parentElement.classList.remove('skeleton')"
-                            class="w-full h-[450px] object-cover grayscale group-hover:grayscale-0 transition-all duration-700 hover:scale-105">
+                            class="w-full h-[450px] object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
                     </div>
                     <div class="absolute -bottom-6 -left-6 bg-burgundy p-8 text-gold hidden lg:block shadow-xl">
                         <p class="font-serif text-4xl">Equipe</p>
@@ -471,8 +501,8 @@
         </div>
     </section>
 
-    <section id="advogados" class="py-24 bg-white" x-data="teamSection">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <section id="advogados" class="py-24 bg-white overflow-hidden" x-data="teamSection">
+        <div class="max-w-7xl mx-auto px-4 lg:px-12">
             <h2 class="font-serif text-[10px] uppercase tracking-[0.5em] text-gold mb-4 text-center">Corpo Jurídico</h2>
             <h3 class="font-serif text-4xl lg:text-5xl text-burgundy mb-20 text-center italic">Sócios e Associados</h3>
 
@@ -491,23 +521,24 @@
                 </div>
             </div>
 
-            <div class="space-y-32" x-show="!loading" x-cloak>
+            <div class="space-y-20 lg:space-y-32" x-show="!loading" x-cloak>
                 <template x-for="(member, index) in members" :key="member.id">
                     <div class="grid lg:grid-cols-12 gap-12 reveal advogado-card"
                         :class="index % 2 !== 0 ? 'lg:text-right' : ''">
-                        <div class="lg:col-span-4 parallax-container bg-burgundy/5 skeleton"
+                        <div class="lg:col-span-4 parallax-container bg-burgundy/5 skeleton group overflow-hidden"
                             :class="index % 2 !== 0 ? 'lg:order-2' : ''">
                             <img :src="member.photo" loading="eager" decoding="async"
                                 @load="$el.parentElement.classList.remove('skeleton')"
-                                class="parallax-img w-full aspect-[3/4] object-cover grayscale" :alt="member.name">
+                                class="parallax-img w-full aspect-[3/4] object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                                :alt="member.name">
                         </div>
                         <div class="lg:col-span-8 flex flex-col justify-center"
                             :class="index % 2 !== 0 ? 'lg:order-1' : ''">
                             <h4 class="font-serif text-3xl text-burgundy italic mb-2" x-text="member.name"></h4>
                             <p class="text-gold text-[10px] uppercase tracking-widest font-bold mb-6"
                                 x-text="member.role"></p>
-                            <div class="prose prose-sm text-gray-600 space-y-4 max-w-2xl"
-                                :class="index % 2 !== 0 ? 'ml-auto' : ''">
+                            <div class="prose prose-sm text-gray-600 space-y-4 max-w-2xl break-words"
+                                :class="index % 2 !== 0 ? 'lg:ml-auto' : ''">
                                 <p class="whitespace-pre-line" x-text="member.bio"></p>
                             </div>
                         </div>
@@ -694,8 +725,8 @@
                 if (!ticking) {
                     window.requestAnimationFrame(() => {
                         const { width, height } = container.getBoundingClientRect();
-                        const x = (mouseX / width - 0.5) * 30;
-                        const y = (mouseY / height - 0.5) * 30;
+                        const x = (mouseX / width - 0.5) * 20;
+                        const y = (mouseY / height - 0.5) * 20;
                         img.style.transform = `scale(1.1) translate3d(${x}px, ${y}px, 0)`;
                         ticking = false;
                     });
@@ -743,9 +774,14 @@
                     this.members = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                     this.members.sort((a, b) => (a.order || 0) - (b.order || 0));
                     this.loading = false;
+
+                    // Reset do observer para novos elementos
                     setTimeout(() => {
-                        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-                    }, 500);
+                        document.querySelectorAll('.reveal').forEach(el => {
+                            revealObserver.unobserve(el);
+                            revealObserver.observe(el);
+                        });
+                    }, 800);
                 }, (err) => {
                     console.error("Erro Firebase Equipe:", err);
                     this.loading = false;
